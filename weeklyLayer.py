@@ -3,7 +3,8 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 
-
+# 读取原始数据，提取siteID，Lat，Long，以及所有的comments，存入到dict中
+# 输出统一格式后的dict
 def importExcel(workbookName = 'siteTemplate.xlsx',workbookSheet = 'Sheet1'):
 		import openpyxl
 		sites = {'MSL Released':{},'Cluster Finalization':{},'STAD Table Locked':{},'Equipment Install Complete':{},'RFI Report':{},'Commissioning and Integration':{}}
@@ -27,7 +28,10 @@ def importExcel(workbookName = 'siteTemplate.xlsx',workbookSheet = 'Sheet1'):
 		return sites;
 
 
-
+# 打开kml模板，将dict中的数据输入进去
+# 使用xml.etree.ElementTree 作为操作xml(kml)的 lib
+# 需要注意的是要先定义namespace
+# 通过循环将dict中的数据，一层一层写入到xml(kml)中，最后储存
 def generateSite (sites,kmlName):
 	
 		import xml.etree.ElementTree as ET
@@ -84,7 +88,7 @@ def generateSite (sites,kmlName):
 		return; 
 	
 
-
+# 生成kml的主函数
 def gKML():
 		
 		foo.form_widget.currentStatus= "Ready to start"
@@ -94,7 +98,7 @@ def gKML():
 		generateSite(sites,kmlName)
 		foo.form_widget.currentStatus= "Completed"
 
-
+# UI，用于提供按钮和原始文件名的输入
 class MyMainWindow(QMainWindow):
 		
 		def __init__(self, parent = None):
